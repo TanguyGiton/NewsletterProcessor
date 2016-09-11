@@ -1,4 +1,7 @@
 <?php
+/**
+ * Tanguy GITON Copyright (c) 2016.
+ */
 
 namespace AppBundle\Entity;
 
@@ -51,8 +54,14 @@ class Newsletter
 
     /**
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\Rubrique", mappedBy="newsletter")
+     * @ORM\OrderBy({"position" = "ASC"})
      */
     private $rubriques;
+
+    /**
+     * @ORM\Column(name="create_date", type="datetime")
+     */
+    private $createDate;
 
     /**
      * Constructor
@@ -60,6 +69,7 @@ class Newsletter
     public function __construct()
     {
         $this->rubriques = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->setCreateDate(new \DateTime());
     }
 
     /**
@@ -70,30 +80,6 @@ class Newsletter
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * Get title
-     *
-     * @return string
-     */
-    public function getTitle()
-    {
-        return $this->title;
-    }
-
-    /**
-     * Set title
-     *
-     * @param string $title
-     *
-     * @return Newsletter
-     */
-    public function setTitle($title)
-    {
-        $this->title = $title;
-
-        return $this;
     }
 
     /**
@@ -200,5 +186,58 @@ class Newsletter
     public function getRubriques()
     {
         return $this->rubriques;
+    }
+
+    public function __toString()
+    {
+        return $this->getTitle();
+    }
+
+    /**
+     * Get title
+     *
+     * @return string
+     */
+    public function getTitle()
+    {
+        return $this->title;
+    }
+
+    /**
+     * Set title
+     *
+     * @param string $title
+     *
+     * @return Newsletter
+     */
+    public function setTitle($title)
+    {
+        $this->title = $title;
+
+        return $this;
+    }
+
+    /**
+     * Get addDate
+     *
+     * @return \DateTime
+     */
+    public function getCreateDate()
+    {
+        return $this->createDate;
+    }
+
+    /**
+     * Set addDate
+     *
+     * @param \DateTime $createDate
+     *
+     * @return Newsletter
+     */
+    public function setCreateDate($createDate)
+    {
+        $this->createDate = $createDate;
+
+        return $this;
     }
 }

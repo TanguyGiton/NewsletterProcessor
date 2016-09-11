@@ -6,7 +6,7 @@ imports:
 # Put parameters here that don't need to change on each machine where the app is deployed
 # http://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
-    locale: en
+    locale: fr
 
 framework:
     #esi:             ~
@@ -66,3 +66,72 @@ swiftmailer:
     username:  "%mailer_user%"
     password:  "%mailer_password%"
     spool:     { type: memory }
+
+easy_admin:
+    entities:
+        - AppBundle\Entity\Newsletter
+        - AppBundle\Entity\Rubrique
+        - AppBundle\Entity\Post
+        - AppBundle\Entity\Type
+
+stof_doctrine_extensions:
+    default_locale: "%locale%"
+    orm:
+        default:
+            sortable: true
+
+assetic:
+    debug:          "%kernel.debug%"
+    use_controller: "%kernel.debug%"
+    filters:
+        cssrewrite: ~
+    assets:
+        boostrap:
+            inputs:
+                - "%kernel.root_dir%/../vendor/twbs/bootstrap/dist/css/bootstrap.css"
+            filters:
+                - cssrewrite
+        jquery_bootstrap:
+            inputs:
+                - "%kernel.root_dir%/../vendor/jquery/jquery/jquery-2.2.4.js"
+                - "%kernel.root_dir%/../vendor/twbs/bootstrap/dist/js/bootstrap.js"
+        font_awesome:
+            inputs:
+                - '%kernel.root_dir%/../vendor/components/font-awesome/css/font-awesome.css'
+            filters:
+                - cssrewrite
+        font-awesome-otf:
+                inputs: '%kernel.root_dir%/../vendor/components/font-awesome/fonts/FontAwesome.otf'
+                output: 'fonts/FontAwesome.otf'
+        font-awesome-eot:
+            inputs: '%kernel.root_dir%/../vendor/components/font-awesome/fonts/fontawesome-webfont.eot'
+            output: 'fonts/fontawesome-webfont.eot'
+        font-awesome-svg:
+            inputs: '%kernel.root_dir%/../vendor/components/font-awesome/fonts/fontawesome-webfont.svg'
+            output: 'fonts/fontawesome-webfont.svg'
+        font-awesome-ttf:
+            inputs: '%kernel.root_dir%/../vendor/components/font-awesome/fonts/fontawesome-webfont.ttf'
+            output: 'fonts/fontawesome-webfont.ttf'
+        font-awesome-woff:
+            inputs: '%kernel.root_dir%/../vendor/components/font-awesome/fonts/fontawesome-webfont.woff'
+            output: 'fonts/fontawesome-webfont.woff'
+        font-awesome-woff2:
+            inputs: '%kernel.root_dir%/../vendor/components/font-awesome/fonts/fontawesome-webfont.woff2'
+            output: 'fonts/fontawesome-webfont.woff2'
+        glyphicons-eot:
+            inputs: '%kernel.root_dir%/../vendor/twbs/bootstrap/fonts/glyphicons-halflings-regular.eot'
+            output: 'fonts/glyphicons-halflings-regular.eot'
+        glyphicons-svg:
+            inputs: '%kernel.root_dir%/../vendor/twbs/bootstrap/fonts/glyphicons-halflings-regular.svg'
+            output: 'fonts/glyphicons-halflings-regular.svg'
+        glyphicons-ttf:
+            inputs: '%kernel.root_dir%/../vendor/twbs/bootstrap/fonts/glyphicons-halflings-regular.ttf'
+            output: 'fonts/glyphicons-halflings-regular.ttf'
+        glyphicons-woff:
+            inputs: '%kernel.root_dir%/../vendor/twbs/bootstrap/fonts/glyphicons-halflings-regular.woff'
+            output: 'fonts/glyphicons-halflings-regular.woff'
+        glyphicons-woff2:
+            inputs: '%kernel.root_dir%/../vendor/twbs/bootstrap/fonts/glyphicons-halflings-regular.woff2'
+            output: 'fonts/glyphicons-halflings-regular.woff2'
+        jqueryui:
+            inputs: '%kernel.root_dir%/../vendor/components/jqueryui/jquery-ui.js'

@@ -1,0 +1,63 @@
+{% extends 'base.html.twig' %}
+
+{% block jumbotron %}
+    <!-- Main jumbotron for a primary marketing message or call to action -->
+    <div class="jumbotron">
+        <div class="container">
+            <h1>Newsletter ESIEA</h1>
+            <p>Un outil de création et de modification de newsletter simplifié pour le service communication de
+                l'ESIEA.</p>
+            <p><a class="btn btn-primary btn-lg" href="#" role="button">Nouvelle newsletter &raquo;</a></p>
+        </div>
+    </div>
+{% endblock jumbotron %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-lg-12">
+            <h2>Les Newsletters</h2>
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                    <tr>
+                        <th>
+                            #
+                        </th>
+                        <th>
+                            Titre
+                        </th>
+                        <th>
+                            Date
+                        </th>
+                        <th>
+                            Actions
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for newsletter in newsletters %}
+                        <tr>
+                            <th>{{ newsletter.id }}</th>
+                            <td>{{ newsletter.title }}</td>
+                            <td>{{ newsletter.week }}</td>
+                            <td>
+                                <div class="btn-group-xs">
+                                    <a href="{{ path("newsletter_show", {'id': newsletter.id}) }}"
+                                       class="btn btn-success" target="_blank" data-toggle="tooltip"
+                                       data-placement="bottom" title="Voir"><i class="fa fa-search"
+                                                                               aria-hidden="true"></i></a>
+                                    <a href="{{ path("newsletter_edit", {'id': newsletter.id}) }}"
+                                       class="btn btn-warning" data-toggle="tooltip" data-placement="bottom"
+                                       title="Editer"><i class="fa fa-pencil" aria-hidden="true"></i></a>
+                                    <a href="" class="btn btn-primary" data-toggle="tooltip" data-placement="bottom"
+                                       title="Dupliquer"><i class="fa fa-files-o" aria-hidden="true"></i></a>
+                                </div>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

@@ -1,8 +1,12 @@
 <?php
+/**
+ * Tanguy GITON Copyright (c) 2016.
+ */
 
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * Post
@@ -31,14 +35,14 @@ class Post
     /**
      * @var string
      *
-     * @ORM\Column(name="text", type="text")
+     * @ORM\Column(name="text", type="text", nullable=true)
      */
     private $text;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="image", type="string", length=255)
+     * @ORM\Column(name="image", type="string", length=255, nullable=true)
      */
     private $image;
 
@@ -55,10 +59,16 @@ class Post
     private $type;
 
     /**
+     * @Gedmo\SortablePosition()
+     * @ORM\Column(name="position", type="integer")
+     */
+    private $position;
+
+    /**
+     * @Gedmo\SortableGroup()
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Rubrique", inversedBy="posts")
      */
     private $rubrique;
-
 
     /**
      * Get id
@@ -68,30 +78,6 @@ class Post
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * Get title
-     *
-     * @return string
-     */
-    public function getTitle()
-    {
-        return $this->title;
-    }
-
-    /**
-     * Set title
-     *
-     * @param string $title
-     *
-     * @return Post
-     */
-    public function setTitle($title)
-    {
-        $this->title = $title;
-
-        return $this;
     }
 
     /**
@@ -210,6 +196,59 @@ class Post
     public function setRubrique(\AppBundle\Entity\Rubrique $rubrique = null)
     {
         $this->rubrique = $rubrique;
+
+        return $this;
+    }
+
+    public function __toString()
+    {
+        return $this->getTitle();
+    }
+
+    /**
+     * Get title
+     *
+     * @return string
+     */
+    public function getTitle()
+    {
+        return $this->title;
+    }
+
+    /**
+     * Set title
+     *
+     * @param string $title
+     *
+     * @return Post
+     */
+    public function setTitle($title)
+    {
+        $this->title = $title;
+
+        return $this;
+    }
+
+    /**
+     * Get position
+     *
+     * @return integer
+     */
+    public function getPosition()
+    {
+        return $this->position;
+    }
+
+    /**
+     * Set position
+     *
+     * @param integer $position
+     *
+     * @return Post
+     */
+    public function setPosition($position)
+    {
+        $this->position = $position;
 
         return $this;
     }

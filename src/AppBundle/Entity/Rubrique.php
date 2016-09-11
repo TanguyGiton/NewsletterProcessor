@@ -1,8 +1,12 @@
 <?php
+/**
+ * Tanguy GITON Copyright (c) 2016.
+ */
 
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * Rubrique
@@ -51,13 +55,28 @@ class Rubrique
 
     /**
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\Post", mappedBy="rubrique")
+     * @ORM\OrderBy({"position" = "ASC"})
      */
     private $posts;
 
     /**
+     * @var integer
+     *
+     * @Gedmo\SortablePosition()
+     * @ORM\Column(name="position", type="integer")
+     */
+    private $position;
+
+    /**
+     * @Gedmo\SortableGroup()
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Newsletter", inversedBy="rubriques")
      */
     private $newsletter;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Type")
+     */
+    private $type;
 
     /**
      * Constructor
@@ -75,30 +94,6 @@ class Rubrique
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * Get title
-     *
-     * @return string
-     */
-    public function getTitle()
-    {
-        return $this->title;
-    }
-
-    /**
-     * Set title
-     *
-     * @param string $title
-     *
-     * @return Rubrique
-     */
-    public function setTitle($title)
-    {
-        $this->title = $title;
-
-        return $this;
     }
 
     /**
@@ -227,6 +222,83 @@ class Rubrique
     public function setNewsletter(\AppBundle\Entity\Newsletter $newsletter = null)
     {
         $this->newsletter = $newsletter;
+
+        return $this;
+    }
+
+    public function __toString()
+    {
+        return $this->getTitle();
+    }
+
+    /**
+     * Get title
+     *
+     * @return string
+     */
+    public function getTitle()
+    {
+        return $this->title;
+    }
+
+    /**
+     * Set title
+     *
+     * @param string $title
+     *
+     * @return Rubrique
+     */
+    public function setTitle($title)
+    {
+        $this->title = $title;
+
+        return $this;
+    }
+
+    /**
+     * Get position
+     *
+     * @return integer
+     */
+    public function getPosition()
+    {
+        return $this->position;
+    }
+
+    /**
+     * Set position
+     *
+     * @param integer $position
+     *
+     * @return Rubrique
+     */
+    public function setPosition($position)
+    {
+        $this->position = $position;
+
+        return $this;
+    }
+
+    /**
+     * Get type
+     *
+     * @return \AppBundle\Entity\Type
+     */
+    public function getType()
+    {
+        return $this->type;
+    }
+
+    /**
+     * Set type
+     *
+     * @param \AppBundle\Entity\Type $type
+     *
+     * @return Rubrique
+     */
+    public function setType(\AppBundle\Entity\Type $type = null)
+    {
+        $this->type = $type;
 
         return $this;
     }

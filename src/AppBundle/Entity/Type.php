@@ -1,8 +1,12 @@
 <?php
+/**
+ * Tanguy GITON Copyright (c) 2016.
+ */
 
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * Type
@@ -29,6 +33,14 @@ class Type
     private $name;
 
     /**
+     * @var string
+     *
+     * @Gedmo\Slug(fields={"name"}, updatable=false)
+     * @ORM\Column(type="string", length=255, unique=true)
+     */
+    private $slug;
+
+    /**
      * @var array
      *
      * @ORM\Column(name="fields", type="simple_array")
@@ -43,6 +55,35 @@ class Type
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * Get fields
+     *
+     * @return array
+     */
+    public function getFields()
+    {
+        return $this->fields;
+    }
+
+    /**
+     * Set fields
+     *
+     * @param array $fields
+     *
+     * @return Type
+     */
+    public function setFields($fields)
+    {
+        $this->fields = $fields;
+
+        return $this;
+    }
+
+    public function __toString()
+    {
+        return $this->getName();
     }
 
     /**
@@ -70,25 +111,25 @@ class Type
     }
 
     /**
-     * Get fields
+     * Get slug
      *
-     * @return array
+     * @return string
      */
-    public function getFields()
+    public function getSlug()
     {
-        return $this->fields;
+        return $this->slug;
     }
 
     /**
-     * Set fields
+     * Set slug
      *
-     * @param array $fields
+     * @param string $slug
      *
      * @return Type
      */
-    public function setFields($fields)
+    public function setSlug($slug)
     {
-        $this->fields = $fields;
+        $this->slug = $slug;
 
         return $this;
     }

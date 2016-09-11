@@ -16,6 +16,19 @@
       "Tests\\": "tests/"
     }
   },
+  "repositories": [
+    {
+      "type": "package",
+      "package": {
+        "name": "jquery/jquery",
+        "version": "2.2.4",
+        "dist": {
+          "url": "https://code.jquery.com/jquery-2.2.4.js",
+          "type": "file"
+        }
+      }
+    }
+  ],
   "require": {
     "php": ">=5.5.9",
     "symfony/symfony": "3.1.*",
@@ -27,7 +40,14 @@
     "symfony/polyfill-apcu": "^1.0",
     "sensio/distribution-bundle": "^5.0",
     "sensio/framework-extra-bundle": "^3.0.2",
-    "incenteev/composer-parameter-handler": "^2.0"
+    "incenteev/composer-parameter-handler": "^2.0",
+    "javiereguiluz/easyadmin-bundle": "^1.15",
+    "stof/doctrine-extensions-bundle": "^1.2",
+    "knplabs/knp-markdown-bundle": "^1.5",
+    "twbs/bootstrap": "^3.3",
+    "symfony/assetic-bundle": "^2.8",
+    "jquery/jquery": "^2.2",
+    "components/font-awesome": "^4.6"
   },
   "require-dev": {
     "sensio/generator-bundle": "^3.0",

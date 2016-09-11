@@ -1,0 +1,18 @@
+<tr>
+    <td class="column_cell one_column"
+        style="padding: 5px 32px 5px 32px;vertical-align: top;text-align: left;">
+        <h3 style="font-family: Helvetica, Arial, sans-serif;margin-left: 0;margin-right: 0;padding: 0;font-weight: 600;font-size: large;line-height: 1.5;margin-top: 10px;margin-bottom: 0;color: #4c4c4c;">
+            <span class="une" style="color:#4c4c4c">{{ post.title }}</span>
+        </h3>
+        <p style="font-family: Helvetica, Arial, sans-serif;font-size: medium;line-height: 1.5;margin-top: 16px;margin-bottom: 24px;color: #4c4c4c;">
+            {{ post.text|markdown|replace({'<p>':'', '</p>':''})|raw }}
+            {% if post.link is not empty %}
+                <a
+                        href="{{ post.link }}"
+                        target="_blank"
+                        style="display: inline-block;text-decoration: none;font-family: Helvetica, Arial, sans-serif;color: #2c87c3;"><span
+                            style="color: #2c87c3;text-decoration: none;">> Voir</span></a>
+            {% endif %}
+        </p>
+    </td>
+</tr>
