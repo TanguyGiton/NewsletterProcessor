@@ -17,10 +17,10 @@
         {% block head_style %}
 
             {% block head_style_assetic %}
-                {% stylesheets filter='cssrewrite'
+                {% stylesheets
                 '@boostrap'
                 '@font_awesome'
-                'bundles/app/css/*' %}
+                'bundles/app/less/*' %}
                 <link rel="stylesheet" href="{{ asset_url }}">
                 {% endstylesheets %}
             {% endblock head_style_assetic %}
@@ -145,7 +145,7 @@
 {% block foot_script_assetic %}
     {% javascripts
     '@jquery_bootstrap'
-    '@AppBundle/Resources/public/js/main.js' %}
+    '@AppBundle/Resources/public/js/*' %}
     <script src="{{ asset_url }}"></script>
     {% endjavascripts %}
 {% endblock foot_script_assetic %}

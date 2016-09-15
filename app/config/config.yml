@@ -83,14 +83,23 @@ stof_doctrine_extensions:
 assetic:
     debug:          "%kernel.debug%"
     use_controller: "%kernel.debug%"
+    node: "%node_path%"
     filters:
-        cssrewrite: ~
+        cssrewrite:
+            apply_to: '\.css$'
+        uglifycss:
+            bin: "%uglifycss_path%"
+            apply_to: '\.css$'
+        uglifyjs2:
+            bin: "%uglifyjs2_path%"
+            apply_to:   '\.js$'
+        less:
+            node_paths: "%node_paths_path%"
+            apply_to:   '\.less$'
     assets:
         boostrap:
             inputs:
-                - "%kernel.root_dir%/../vendor/twbs/bootstrap/dist/css/bootstrap.css"
-            filters:
-                - cssrewrite
+                - "%kernel.root_dir%/../vendor/twbs/bootstrap/less/bootstrap.less"
         jquery_bootstrap:
             inputs:
                 - "%kernel.root_dir%/../vendor/jquery/jquery/jquery-2.2.4.js"
@@ -98,8 +107,6 @@ assetic:
         font_awesome:
             inputs:
                 - '%kernel.root_dir%/../vendor/components/font-awesome/css/font-awesome.css'
-            filters:
-                - cssrewrite
         font-awesome-otf:
                 inputs: '%kernel.root_dir%/../vendor/components/font-awesome/fonts/FontAwesome.otf'
                 output: 'fonts/FontAwesome.otf'
@@ -134,4 +141,5 @@ assetic:
             inputs: '%kernel.root_dir%/../vendor/twbs/bootstrap/fonts/glyphicons-halflings-regular.woff2'
             output: 'fonts/glyphicons-halflings-regular.woff2'
         jqueryui:
-            inputs: '%kernel.root_dir%/../vendor/components/jqueryui/jquery-ui.js'
+            inputs:
+                - '%kernel.root_dir%/../vendor/components/jqueryui/jquery-ui.js'

@@ -68,12 +68,16 @@ class NewsletterController extends Controller
 
         $newsletter = $em->getRepository('AppBundle:Newsletter')->find($id);
 
+        $form = $this->createFormBuilder($newsletter)
+            ->getForm();
+
         if (!$newsletter) {
             throw new NotFoundHttpException('Newsletter not found');
         }
 
         return $this->render('@App/edit.html.twig', [
             'newsletter' => $newsletter,
+            'form' => $form->createView(),
         ]);
     }
 }
