@@ -18,18 +18,18 @@ class PostType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('title')
-            ->add('text')
-            ->add('image')
-            ->add('link')
-            ->add('position')
-            ->add('type')
-            ->add('rubrique');
+	        ->add( 'title' )
+	        ->add( 'text' )
+	        ->add( 'image' )
+	        ->add( 'link' )
+	        ->add( 'type' );
     }
 
-    /**
-     * @param OptionsResolver $resolver
-     */
+	/**
+	 * @param OptionsResolver $resolver
+	 *
+	 * @throws \Symfony\Component\OptionsResolver\Exception\AccessException
+	 */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(

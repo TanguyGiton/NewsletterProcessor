@@ -5,6 +5,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Form\NewsletterType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -15,69 +16,70 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
  */
 class NewsletterController extends Controller
 {
-    /**
-     * @param $id
-     * @return \Symfony\Component\HttpFoundation\Response
-     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
-     *
-     * @Route("/view/{id}.html", name="newsletter_show")
-     */
-    public function viewAction($id)
-    {
-        $newsletter = $this->getDoctrine()
-            ->getRepository('AppBundle:Newsletter')
-            ->find($id);
+	/**
+	 * @param $id
+	 *
+	 * @return \Symfony\Component\HttpFoundation\Response
+	 * @throws \LogicException
+	 * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+	 *
+	 * @Route("/view/{id}.html", name="newsletter_show")
+	 */
+	public function viewAction( $id ) {
+		$newsletter = $this->getDoctrine()
+		                   ->getRepository( 'AppBundle:Newsletter' )
+		                   ->find( $id );
 
-        if ($newsletter === null) {
-            throw new NotFoundHttpException('Newsletter not found');
-        }
-
-        return $this->render('@App/newsletter/newsletter.html.twig', array(
-            'newsletter' => $newsletter,
-        ));
+		if ( $newsletter === null ) {
+			throw new NotFoundHttpException( 'Newsletter not found' );
     }
 
-    /**
-     * @return \Symfony\Component\HttpFoundation\Response
-     * @throws \LogicException
-     *
-     * @Route("/", name="homepage")
-     */
-    public function indexAction()
-    {
-        $newsletters = $this->getDoctrine()
-            ->getManager()
-            ->getRepository('AppBundle:Newsletter')
-            ->findAll();
+		return $this->render( '@App/newsletter/newsletter.html.twig', array(
+			'newsletter' => $newsletter,
+		) );
+	}
 
-        return $this->render('@App/index.html.twig', [
-            'newsletters' => $newsletters,
-        ]);
-    }
+	/**
+	 * @return \Symfony\Component\HttpFoundation\Response
+	 * @throws \LogicException
+	 *
+	 * @Route("/", name="homepage")
+	 */
+	public function indexAction() {
+		$newsletters = $this->getDoctrine()
+		                    ->getManager()
+		                    ->getRepository( 'AppBundle:Newsletter' )
+		                    ->findAll();
 
-    /**
-     * @param $id
-     * @return \Symfony\Component\HttpFoundation\Response
-     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
-     * @Route("/edit/{id}", name="newsletter_edit")
-     */
-    public function editAction($id)
-    {
+		return $this->render( '@App/index.html.twig', [
+			'newsletters' => $newsletters,
+		] );
+	}
 
-        $em = $this->getDoctrine()->getManager();
+	/**
+	 * @param $id
+	 *
+	 * @return \Symfony\Component\HttpFoundation\Response
+	 * @throws \InvalidArgumentException
+	 * @throws \LogicException
+	 * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+	 * @Route("/edit/{id}", name="newsletter_edit")
+	 */
+	public function editAction( $id ) {
 
-        $newsletter = $em->getRepository('AppBundle:Newsletter')->find($id);
+		$em = $this->getDoctrine()->getManager();
 
-        $form = $this->createFormBuilder($newsletter)
-            ->getForm();
+		$newsletter = $em->getRepository( 'AppBundle:Newsletter' )->find( $id );
 
-        if (!$newsletter) {
-            throw new NotFoundHttpException('Newsletter not found');
-        }
+		$form = $this->createForm( NewsletterType::class, $newsletter );
 
-        return $this->render('@App/edit.html.twig', [
-            'newsletter' => $newsletter,
-            'form' => $form->createView(),
-        ]);
-    }
+		if ( ! $newsletter ) {
+			throw new NotFoundHttpException( 'Newsletter not found' );
+		}
+
+		return $this->render( '@App/edit.html.twig', [
+			'newsletter' => $newsletter,
+			'form'       => $form->createView(),
+		] );
+	}
 }
