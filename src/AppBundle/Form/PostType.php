@@ -17,12 +17,12 @@ class PostType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder
-	        ->add( 'title' )
-	        ->add( 'text' )
-	        ->add( 'image' )
-	        ->add( 'link' )
-	        ->add( 'type' );
+
+        $fields = $options['fields'];
+
+        foreach ((array)$fields as $field) {
+            $builder->add($field);
+        }
     }
 
 	/**
@@ -33,7 +33,8 @@ class PostType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'AppBundle\Entity\Post'
+            'data_class' => 'AppBundle\Entity\Post',
+            'fields' => array('title'),
         ));
     }
 }

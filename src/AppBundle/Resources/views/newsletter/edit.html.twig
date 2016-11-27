@@ -1,0 +1,92 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Editer une newsletter - {{ parent() }}{% endblock title %}
+
+{% block jumbotron %}
+{% endblock jumbotron %}
+
+{% block content %}
+    <div class="row">
+        <h1>Editer la newsletter</h1>
+        <div class="col-lg-8">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">En-tête</h3>
+                </div>
+                <div class="panel-body">
+                    <div>{{ newsletter.title }}</div>
+                    <div>{{ newsletter.week }}</div>
+                </div>
+            </div>
+
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Rubriques</h3>
+
+                </div>
+                <div class="panel-body">
+                    {% for rubrique in newsletter.rubriques %}
+                        <div class="panel panel-default">
+                            <a role="button" data-toggle="collapse" data-target="#rubrique{{ loop.index }}">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title">
+                                        {{ rubrique.title }}
+                                    </h4>
+                                </div>
+                            </a>
+                            <div id="rubrique{{ loop.index }}" class="panel-collapse collapse">
+                                <div class="panel-body">
+                                    <ul class="list-unstyled post-sortable">
+                                        {% for post in rubrique.posts %}
+                                            <li class="panel panel-default" id="post_{{ post.id }}">
+                                                <div class="panel-body">
+                                                    <span class="post-title">{{ post.title }}</span>
+                                                    <div class="btn-group-xs pull-right">
+                                                        <a href="{{ path('post_edit', {'id': post.id}) }}"
+                                                           class="btn btn-warning" data-toggle="modal"
+                                                           data-target="#post-form-modal" data-remote="false"
+                                                           title="Editer"><i class="fa fa-pencil"
+                                                                             aria-hidden="true"></i></a>
+                                                        <a href="{{ path('post_delete', {'id': post.id}) }}"
+                                                           class="btn btn-danger"
+                                                           data-placement="bottom" data-toggle="modal"
+                                                           data-target="#post-form-modal" data-remote="false"
+                                                           title="Supprimer"><i class="fa fa-trash"
+                                                                                aria-hidden="true"></i></a>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
+                                    <a href="{{ path('post_new', {rubrique: rubrique.id}) }}"
+                                       class="btn btn-primary pull-right"
+                                       data-placement="bottom" data-toggle="modal"
+                                       data-target="#post-form-modal" data-remote="false"
+                                       title="Nouveau"><i class="fa fa-plus" aria-hidden="true"></i> Ajouter un post</a>
+
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+        </div>
+        <div class="col-lg-4">
+            <div class="panel panel-default">
+                <div class="panel-body text-center">
+                    <a href="{{ path('newsletter_show', {'id': newsletter.id}) }}" class="btn btn-success"
+                       target="_blank">Voir la
+                        newsletter</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="post-form-modal" class="modal fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+            </div>
+        </div>
+    </div>
+{% endblock content %}

@@ -101,9 +101,11 @@ assetic:
         boostrap:
             inputs:
                 - "%kernel.root_dir%/../vendor/twbs/bootstrap/less/bootstrap.less"
-        jquery_bootstrap:
+        jqueryjs:
             inputs:
                 - "%kernel.root_dir%/../vendor/jquery/jquery/jquery-2.2.4.js"
+        bootstrapjs:
+            inputs:
                 - "%kernel.root_dir%/../vendor/twbs/bootstrap/dist/js/bootstrap.js"
         font_awesome:
             inputs:
@@ -141,6 +143,12 @@ assetic:
         glyphicons-woff2:
             inputs: '%kernel.root_dir%/../vendor/twbs/bootstrap/fonts/glyphicons-halflings-regular.woff2'
             output: 'fonts/glyphicons-halflings-regular.woff2'
-        jqueryui:
+        jqueryuijs:
             inputs:
                 - '%kernel.root_dir%/../vendor/components/jqueryui/jquery-ui.js'
+        simple-mde-js:
+            inputs:
+                - '%kernel.root_dir%/../bower_components/simplemde/debug/simplemde.js'
+        simple-mde-css:
+            inputs:
+                - '%kernel.root_dir%/../bower_components/simplemde/debug/simplemde.css'

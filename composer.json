@@ -50,6 +50,7 @@
     "components/font-awesome": "^4.6",
     "components/jqueryui": "^1.11",
     "mopa/bootstrap-bundle": "^3.1"
+
   },
   "require-dev": {
     "sensio/generator-bundle": "^3.0",
@@ -66,10 +67,12 @@
       "Mopa\\Bundle\\BootstrapBundle\\Composer\\ScriptHandler::postInstallSymlinkTwitterBootstrap"
     ],
     "post-install-cmd": [
-      "@symfony-scripts"
+      "@symfony-scripts",
+      "bower install"
     ],
     "post-update-cmd": [
-      "@symfony-scripts"
+      "@symfony-scripts",
+      "bower update"
     ]
   },
   "extra": {
