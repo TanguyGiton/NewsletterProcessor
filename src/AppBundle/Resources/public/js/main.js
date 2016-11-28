@@ -19,29 +19,22 @@
         'common': {
             init: function () {
                 $('[data-toggle="tooltip"]').tooltip();
-            },
-            finalize: function () {
-                // JavaScript to be fired on all pages, after page specific JS is fired
-            }
-        },
-        // Home page
-        'newsletter_edit': {
-            init: function () {
+
                 var loading = '<div class="text-center"><i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i><span class="sr-only">Loading...</span></div>';
 
-                var $postFromModal = $('#post-form-modal');
+                var $postFormModal = $('#post-form-modal');
 
-                $postFromModal.on('show.bs.modal', function (e) {
+                $postFormModal.on('show.bs.modal', function (e) {
 
                     var $btn = $(e.relatedTarget);
 
-                    var $modalContent = $postFromModal.find('.modal-content');
+                    var $modalContent = $postFormModal.find('.modal-content');
 
                     $modalContent.html(loading);
 
                     $modalContent.load($btn.attr("href"), function () {
 
-                        $postFromModal.find('form').submit(function (e) {
+                        $postFormModal.find('form').submit(function (e) {
 
                             var $form = $(this);
 
@@ -68,9 +61,18 @@
                                             $newPost.find('.post-title').html($form.find('#new_post_title').val());
                                             $newPost.hide().appendTo($panel.find('ul')).fadeIn();
                                             break;
+                                        case 'edit_newsletter-header':
+                                            $panel.find('#newsletter-title').html($form.find('#edit_newsletter-header_title').val());
+                                            $panel.find('#newsletter-week').html($form.find('#edit_newsletter-header_week').val());
+                                            break;
+                                        case 'delete_newsletter':
+                                            $($btn.parents('tr')[0]).fadeOut(400, function () {
+                                                $(this).remove();
+                                            });
+                                            break;
                                     }
 
-                                    $postFromModal.modal('hide');
+                                    $postFormModal.modal('hide');
                                 }
                             });
 
@@ -78,12 +80,21 @@
                         })
                     });
                 }).on('shown.bs.modal', function () {
-                    var simplemde = new SimpleMDE({
-                        spellChecker: false,
-                        forceSync: true,
-                    });
+                    if ($(this).find('textarea').size() > 0) {
+                        var simplemde = new SimpleMDE({
+                            spellChecker: false,
+                            forceSync: true,
+                        });
+                    }
                 });
-
+            },
+            finalize: function () {
+                // JavaScript to be fired on all pages, after page specific JS is fired
+            }
+        },
+        // Home page
+        'newsletter_edit': {
+            init: function () {
                 $(".post-sortable").sortable({
                     cursor: "move",
                     update: function () {
@@ -97,7 +108,6 @@
                                 console.log('error');
                             }
                         });
-
                     }
                 });
             },

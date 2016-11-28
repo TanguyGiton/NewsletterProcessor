@@ -5,6 +5,7 @@
 
 namespace AppBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 
@@ -54,7 +55,7 @@ class Rubrique
     private $subtitle;
 
     /**
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Post", mappedBy="rubrique")
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Post", mappedBy="rubrique", cascade={"persist", "remove"})
      * @ORM\OrderBy({"position" = "ASC"})
      */
     private $posts;
@@ -193,16 +194,6 @@ class Rubrique
     }
 
     /**
-     * Get posts
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getPosts()
-    {
-        return $this->posts;
-    }
-
-    /**
      * Get newsletter
      *
      * @return \AppBundle\Entity\Newsletter
@@ -301,5 +292,28 @@ class Rubrique
         $this->type = $type;
 
         return $this;
+    }
+
+    public function __clone()
+    {
+        $posts = $this->getPosts();
+
+        $this->posts = new ArrayCollection();
+
+        foreach ($posts as $post) {
+            $clone = clone $post;
+            $this->posts->add($clone);
+            $clone->setRubrique($this);
+        }
+    }
+
+    /**
+     * Get posts
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getPosts()
+    {
+        return $this->posts;
     }
 }

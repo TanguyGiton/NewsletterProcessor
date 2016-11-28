@@ -5,6 +5,7 @@
 
 namespace AppBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -53,7 +54,7 @@ class Newsletter
     private $footer;
 
     /**
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Rubrique", mappedBy="newsletter")
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Rubrique", mappedBy="newsletter", cascade={"persist", "remove"})
      * @ORM\OrderBy({"position" = "ASC"})
      */
     private $rubriques;
@@ -178,16 +179,6 @@ class Newsletter
         $this->rubriques->removeElement($rubrique);
     }
 
-    /**
-     * Get rubriques
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getRubriques()
-    {
-        return $this->rubriques;
-    }
-
     public function __toString()
     {
         return $this->getTitle();
@@ -239,5 +230,28 @@ class Newsletter
         $this->createDate = $createDate;
 
         return $this;
+    }
+
+    public function __clone()
+    {
+        $rubriques = $this->getRubriques();
+
+        $this->rubriques = new ArrayCollection();
+
+        foreach ($rubriques as $rubrique) {
+            $clone = clone $rubrique;
+            $this->rubriques->add($clone);
+            $clone->setNewsletter($this);
+        }
+    }
+
+    /**
+     * Get rubriques
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getRubriques()
+    {
+        return $this->rubriques;
     }
 }

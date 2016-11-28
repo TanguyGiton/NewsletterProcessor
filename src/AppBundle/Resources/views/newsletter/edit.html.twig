@@ -14,8 +14,13 @@
                     <h3 class="panel-title">En-tête</h3>
                 </div>
                 <div class="panel-body">
-                    <div>{{ newsletter.title }}</div>
-                    <div>{{ newsletter.week }}</div>
+                    <a href="{{ path('newsletter_header-edit', {id: newsletter.id}) }}"
+                       class="btn btn-warning pull-right"
+                       data-placement="bottom" data-toggle="modal"
+                       data-target="#post-form-modal" data-remote="false"
+                       title="Modifier"><i class="fa fa-pencil" aria-hidden="true"></i> Modifier</a>
+                    <div id="newsletter-title">{{ newsletter.title }}</div>
+                    <div id="newsletter-week">{{ newsletter.week }}</div>
                 </div>
             </div>
 
@@ -58,7 +63,7 @@
                                             </li>
                                         {% endfor %}
                                     </ul>
-                                    <a href="{{ path('post_new', {rubrique: rubrique.id}) }}"
+                                    <a href="{{ path('post_new', {id: rubrique.id}) }}"
                                        class="btn btn-primary pull-right"
                                        data-placement="bottom" data-toggle="modal"
                                        data-target="#post-form-modal" data-remote="false"

@@ -3,6 +3,7 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Post;
+use AppBundle\Entity\Rubrique;
 use AppBundle\Form\PostType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -10,7 +11,6 @@ use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * Class PostController
@@ -22,40 +22,32 @@ class PostController extends Controller
 {
     /**
      * @param Request $request
-     * @param $id
+     * @param Post $post
+     *
      * @return \Symfony\Component\HttpFoundation\Response
-     * @throws \Symfony\Component\OptionsResolver\Exception\InvalidOptionsException
-     * @throws \LogicException
-     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     *
      * @throws \Symfony\Component\HttpKernel\Exception\BadRequestHttpException
+     * @throws \Symfony\Component\OptionsResolver\Exception\InvalidOptionsException
+     *
      * @Route(path="/edit/{id}", name="post_edit")
      */
-    public function editAction(Request $request, $id)
+    public function editAction(Request $request, Post $post)
     {
         if (!$request->isXmlHttpRequest()) {
             throw new BadRequestHttpException('Only ajax accepted');
         }
 
-        $em = $this->getDoctrine()->getManager();
-
-        $post = $em->getRepository('AppBundle:Post')->find($id);
-
         $form = $this->get('form.factory')->createNamedBuilder('edit_post', PostType::class, $post, array(
-            'action' => $this->generateUrl('post_edit', array('id' => $id)),
+            'action' => $this->generateUrl('post_edit', array('id' => $post->getId())),
             'fields' => $post->getType()->getFields(),
         ))
             ->getForm();
-
-
-        if (!$post) {
-            throw new NotFoundHttpException('Post not found');
-        }
 
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            $em->flush();
+            $this->getDoctrine()->getManager()->flush();
 
             return new JsonResponse(array(
                 'status' => 'ok'
@@ -70,31 +62,23 @@ class PostController extends Controller
 
     /**
      * @param Request $request
-     * @param $id
+     * @param Post $post
+     *
+     * @return JsonResponse|\Symfony\Component\HttpFoundation\Response
+     *
+     * @throws \Symfony\Component\OptionsResolver\Exception\InvalidOptionsException
+     * @throws \Symfony\Component\HttpKernel\Exception\BadRequestHttpException
      *
      * @Route(path="/delete/{id}", name="post_delete")
-     * @return JsonResponse|\Symfony\Component\HttpFoundation\Response
-     * @throws \Symfony\Component\OptionsResolver\Exception\InvalidOptionsException
-     * @throws \LogicException
-     * @throws \Symfony\Component\HttpKernel\Exception\BadRequestHttpException
-     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
      */
-    public function deleteAction(Request $request, $id)
+    public function deleteAction(Request $request, Post $post)
     {
         if (!$request->isXmlHttpRequest()) {
             throw new BadRequestHttpException('Only ajax accepted');
         }
 
-        $em = $this->getDoctrine()->getManager();
-
-        $post = $em->getRepository('AppBundle:Post')->find($id);
-
-        if (!$post) {
-            throw new NotFoundHttpException('Post not found');
-        }
-
         $form = $this->get('form.factory')->createNamedBuilder('delete_post', FormType::class, null, array(
-            'action' => $this->generateUrl('post_delete', array('id' => $id)),
+            'action' => $this->generateUrl('post_delete', array('id' => $post->getId())),
         ))
             ->getForm();
 
@@ -103,6 +87,7 @@ class PostController extends Controller
 
         if ($form->isSubmitted() && $form->isValid()) {
 
+            $em = $this->getDoctrine()->getManager();
             $em->remove($post);
             $em->flush();
 
@@ -154,26 +139,20 @@ class PostController extends Controller
 
     /**
      * @param Request $request
+     * @param Rubrique $rubrique
      *
-     * @param $typeSlug
      * @return JsonResponse|\Symfony\Component\HttpFoundation\Response
+     *
+     * @throws \Symfony\Component\HttpKernel\Exception\BadRequestHttpException
      * @throws \LogicException
-     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
      * @throws \Symfony\Component\OptionsResolver\Exception\InvalidOptionsException
-     * @Route(path="/new/{rubrique}", name="post_new")
+     *
+     * @Route(path="/new/{id}", name="post_new")
      */
-    public function addAction(Request $request, $rubrique)
+    public function addAction(Request $request, Rubrique $rubrique)
     {
         if (!$request->isXmlHttpRequest()) {
-            //throw new BadRequestHttpException('Only ajax accepted');
-        }
-
-        $em = $this->getDoctrine()->getManager();
-
-        $rubrique = $em->getRepository('AppBundle:Rubrique')->find($rubrique);
-
-        if (!$rubrique) {
-            throw new NotFoundHttpException('Type not found');
+            throw new BadRequestHttpException('Only ajax accepted');
         }
 
         $post = new Post();
@@ -182,7 +161,7 @@ class PostController extends Controller
 
         $form = $this->get('form.factory')->createNamedBuilder('new_post', PostType::class, $post, array(
             'action' => $this->generateUrl('post_new', array(
-                'rubrique' => $rubrique->getId(),
+                'id' => $rubrique->getId(),
             )),
             'fields' => $post->getType()->getFields(),
         ))
@@ -192,6 +171,7 @@ class PostController extends Controller
 
         if ($form->isSubmitted() && $form->isValid()) {
 
+            $em = $this->getDoctrine()->getManager();
             $em->persist($post);
             $em->flush();
 
