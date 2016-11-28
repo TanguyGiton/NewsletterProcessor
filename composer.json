@@ -67,12 +67,10 @@
       "Mopa\\Bundle\\BootstrapBundle\\Composer\\ScriptHandler::postInstallSymlinkTwitterBootstrap"
     ],
     "post-install-cmd": [
-      "@symfony-scripts",
-      "bower install"
+      "@symfony-scripts"
     ],
     "post-update-cmd": [
-      "@symfony-scripts",
-      "bower update"
+      "@symfony-scripts"
     ]
   },
   "extra": {
